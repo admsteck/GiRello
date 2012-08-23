@@ -1,0 +1,89 @@
+﻿{
+   "after":"0deb7eccccf1bfe48e774b1da0ceefa2d787f1ef",
+   "before":"5c2b25c17eba718b91ff203273ccd16c386126b1",
+   "commits":[
+      {
+         "added":[
+
+         ],
+         "author":{
+            "email":"admsteck@thestechschultes.com",
+            "name":"Adam Stechschulte",
+            "username":"admsteck"
+         },
+         "committer":{
+            "email":"admsteck@thestechschultes.com",
+            "name":"Adam Stechschulte",
+            "username":"admsteck"
+         },
+         "distinct":true,
+         "id":"0deb7eccccf1bfe48e774b1da0ceefa2d787f1ef",
+         "message":"fix extra using",
+         "modified":[
+            "GiRello/Controllers/CommentsController.cs"
+         ],
+         "removed":[
+
+         ],
+         "timestamp":"2012-08-23T09:52:11-07:00",
+         "url":"https://github.com/admsteck/GiRello/commit/0deb7eccccf1bfe48e774b1da0ceefa2d787f1ef"
+      }
+   ],
+   "compare":"https://github.com/admsteck/GiRello/compare/5c2b25c17eba...0deb7eccccf1",
+   "created":false,
+   "deleted":false,
+   "forced":false,
+   "head_commit":{
+      "added":[
+
+      ],
+      "author":{
+         "email":"admsteck@thestechschultes.com",
+         "name":"Adam Stechschulte",
+         "username":"admsteck"
+      },
+      "committer":{
+         "email":"admsteck@thestechschultes.com",
+         "name":"Adam Stechschulte",
+         "username":"admsteck"
+      },
+      "distinct":true,
+      "id":"0deb7eccccf1bfe48e774b1da0ceefa2d787f1ef",
+      "message":"fix extra using",
+      "modified":[
+         "GiRello/Controllers/CommentsController.cs"
+      ],
+      "removed":[
+
+      ],
+      "timestamp":"2012-08-23T09:52:11-07:00",
+      "url":"https://github.com/admsteck/GiRello/commit/0deb7eccccf1bfe48e774b1da0ceefa2d787f1ef"
+   },
+   "pusher":{
+      "email":"admsteck@thestechschultes.com",
+      "name":"admsteck"
+   },
+   "ref":"refs/heads/master",
+   "repository":{
+      "created_at":"2012-08-23T05:00:08-07:00",
+      "description":"",
+      "fork":false,
+      "forks":0,
+      "has_downloads":true,
+      "has_issues":true,
+      "has_wiki":true,
+      "language":"JavaScript",
+      "name":"GiRello",
+      "open_issues":0,
+      "owner":{
+         "email":"admsteck@thestechschultes.com",
+         "name":"admsteck"
+      },
+      "private":false,
+      "pushed_at":"2012-08-23T09:52:27-07:00",
+      "size":10516,
+      "stargazers":0,
+      "url":"https://github.com/admsteck/GiRello",
+      "watchers":0
+   }
+}
