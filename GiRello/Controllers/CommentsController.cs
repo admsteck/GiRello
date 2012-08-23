@@ -6,20 +6,36 @@ using System.Net.Http;
 using System.Web.Http;
 using TrelloNet;
 using GiRello.Models;
+using Newtonsoft.Json;
+using System.Web;
+using System.Text.RegularExpressions;
 
 namespace GiRello.Controllers
 {
     public class CommentsController : ApiController
     {
         // POST api/comments
-        public void Post(string id, [FromBody]CommitPayload payload)
+        public void Post([FromUri] string id)
         {
-            var trello = new Trello("c6163a4015c586e703e8ea98f94a89fa");
-            trello.Authorize("8c9152a54ff0b43f28d97966621ccb88242b703bfb4de005e3d2ab319da3ad54");
-            var boardId = new BoardId(id);
-            var card = trello.Cards.WithShortId(133, boardId);
-            var cardId = new CardId(card.Id);
-            trello.Cards.AddComment(cardId, "Test from GiRello");
+            var content = Request.Content.ReadAsStringAsync();
+            content.Wait();
+            var result = content.Result;
+            result = HttpUtility.UrlDecode(result);
+            result = result.Replace("payload=", "");
+            dynamic payload = JsonConvert.DeserializeObject(result);
+            foreach (dynamic commit in payload.commits)
+            {
+                string message = commit.message;
+                string pattern = @"(?<=#)\d{1,}";
+                foreach(Match match in Regex.Matches(message,pattern,RegexOptions.IgnoreCase)){
+                    var trello = new Trello("c6163a4015c586e703e8ea98f94a89fa");
+                    trello.Authorize("8c9152a54ff0b43f28d97966621ccb88242b703bfb4de005e3d2ab319da3ad54");
+                    var boardId = new BoardId(id);
+                    var card = trello.Cards.WithShortId(int.Parse(match.Value), boardId);
+                    var cardId = new CardId(card.Id);
+                    trello.Cards.AddComment(cardId, "Commit added: " + message);
+                }
+            }
         }
 
     }
