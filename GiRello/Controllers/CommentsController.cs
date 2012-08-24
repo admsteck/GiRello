@@ -33,7 +33,6 @@ namespace GiRello.Controllers
                         response = Request.CreateResponse(HttpStatusCode.Created);
                     }
                 }
-
             }
             else
             {

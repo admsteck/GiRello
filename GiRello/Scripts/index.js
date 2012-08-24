@@ -1,16 +1,4 @@
-﻿ko.bindingHandlers.myText = {
-    init: function (element, valueAccessor) {
-        // Start visible/invisible according to initial value
-        var shouldDisplay = valueAccessor();
-        shouldDisplay ? $(element).removeAttr('disabled') : $(element).attr('disabled', true);
-    },
-    update: function (element, valueAccessor) {
-        // On update, fade in/out
-        var shouldDisplay = valueAccessor();
-        shouldDisplay ? $(element).removeAttr('disabled') : $(element).attr('disabled', true);
-    }
-};
-
+﻿/// <reference path="https://api.trello.com/1/client.js?key=c6163a4015c586e703e8ea98f94a89fa" />
 ko.bindingHandlers.jqButton = {
     init: function (element) {
         $(element).button(); // Turns the element into a jQuery UI button
@@ -22,13 +10,25 @@ ko.bindingHandlers.jqButton = {
     }
 };
 
+ko.bindingHandlers.myFader = {
+    init: function (element) {
+        $(element).fadeTo(0, 0.5);
+    },
+    update: function (element, valueAccessor) {
+        var value = valueAccessor();
+        if (ko.utils.unwrapObservable(value)) { $(element).fadeTo(1000, 1); }
+    }
+};
+
 function AuthViewModel() {
     var self = this;
-    self.loaded = ko.observable(false);
+    self.authed = ko.observable(false);
     self.exists = ko.observable(false);
     self.authToken = ko.observable("");
     self.githubUser = ko.observable("");
     self.bitbucketUser = ko.observable("");
+    self.chosenBoard = ko.observable();
+    self.boards = ko.observableArray([]);
 
     self.saveAuth = function () {
         var d = ko.toJSON({ Token: self.authToken, GithubUser: self.githubUser, BitbucketUser: self.bitbucketUser });
@@ -46,6 +46,7 @@ function AuthViewModel() {
             data: ko.toJSON({ Token: self.authToken, GithubUser: self.githubUser, BitbucketUser: self.bitbucketUser })
         }).done(function () {
             console.log("celebrate");
+            self.exists(true);
         }).fail(function () {
             console.log("mope");
         });
@@ -57,14 +58,14 @@ function AuthViewModel() {
             success: self.onAuthorize,
             name: "GiRello",
             scope: { write: true, read: true },
-            expiration: "never",
+            expiration: "never"
         })
     };
 
     self.onAuthorize = function () {
         console.log("OnAuthorize");
         self.authToken(Trello.token());
-        console.log("this.AuthToken= " + self.authToken());
+        console.log("self.authToken= " + self.authToken());
         $.getJSON("api/authorization/" + self.authToken()).done(function (data) {
             console.log("Got " + data);
             self.githubUser(data.GithubUser);
@@ -72,7 +73,10 @@ function AuthViewModel() {
             self.exists(true);
         }).always(function () {
             console.log("Loaded");
-            self.loaded(true);
+            self.authed(true);
+            Trello.get("members/me/boards", function (boards) {
+                self.boards(boards);
+            });
         });
     };
 

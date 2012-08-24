@@ -19,27 +19,42 @@
         </div>
     </section>
     <section class="content-wrapper main-content clear-fix">
-        <h3>Set up GiRello:</h3>
+        <h3>Set up GiRello in five steps</h3>
         <ol class="round">
             <li class="one">
+                <h5>Setup Trello and Git</h5>
+                If you haven't already, create a <a href="http://trello.com">Trello</a> board for your project and a git repository with either 
+                <a href="http://github.com">Github</a> or <a href="http://bitbucket.org">Bitbucket</a>.
+            </li>
+            <li class="two">
                 <h5>Authorize</h5>
                 <a href="#" data-bind="click: Authorize">Click here</a> to connect GiRello to your Trello account.
             </li>
 
-            <li class="two">
+            <li class="three" data-bind="myFader: authed">
                 <h5>Enter git usernames</h5>
                 Enter your usernames for the services you wish to use with GiRello so we can identify your commits.<br />
                 <form data-bind="submit: saveAuth">
                     <input type="hidden" data-bind="value: authToken" />
-                    <input data-bind="value: githubUser, myText: loaded" placeholder="Github Username" />
-                    <input data-bind="value: bitbucketUser, myText: loaded" placeholder="Bitbucket Username" />
-                    <button data-bind="jqButton: { enable: loaded }, click: saveAuth">Save</button>
+                    <input data-bind="value: githubUser, enable: authed" placeholder="Github Username" />
+                    <input data-bind="value: bitbucketUser, enable: authed" placeholder="Bitbucket Username" />
+                    <button data-bind="jqButton: { enable: authed }, click: saveAuth">Save</button>
                 </form>
             </li>
-            <li class="three">
-                <h5>Generate Post URL</h5>
-                Select the 
+            <li class="four" data-bind="myFader: exists">
+                <h5>Hook up Git</h5>
+                If you do not have admin rights on the git repository, please get with the project admin to hook up git.  If you are a project admin,
+                select one of your trello boards from the list below to get the Post url to use with Git.<br /><br />
+                <select data-bind="options: boards, optionsCaption: 'Select a board...', optionsText: 'name', value: chosenBoard"></select>
+                <!-- ko with: chosenBoard -->@Request.Url.AbsoluteUri.TrimEnd('/')@Url.HttpRouteUrl("DefaultApi", new { controller = "Comments" })/<span data-bind="text: id"></span><!-- /ko -->
+                <br /><br />Todo: provide instructions on what to do with it.
             </li>
+            <li class="five" data-bind="myFader: exists">
+                <h5>Make commits!</h5>
+                Simply include the card number in the commit message and GiRello will add the commit message as a comment on that card.
+                For example "Fixes #32" will comment on card 32.  Make sure you include the "#".
+            </li>
+
         </ol>
     </section>
 </div>
