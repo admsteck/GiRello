@@ -1,4 +1,4 @@
-﻿/// <reference path="https://api.trello.com/1/client.js?key=c6163a4015c586e703e8ea98f94a89fa" />
+﻿/// <reference path="https://api.trello.com/1/client.js?key=cba437c57ff37b1d42536e654657490d" />
 ko.bindingHandlers.jqButton = {
     init: function (element) {
         $(element).button(); // Turns the element into a jQuery UI button

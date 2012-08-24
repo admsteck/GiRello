@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using TrelloNet;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace GiRello.Controllers
 {
@@ -17,19 +19,49 @@ namespace GiRello.Controllers
             if (ModelState.IsValid && gitPost != null)
             {
                 response = Request.CreateResponse(HttpStatusCode.NoContent);
-                dynamic payload = JsonConvert.DeserializeObject(gitPost.payload);
-                foreach (dynamic commit in payload.commits)
+                JObject payload = JObject.Parse(gitPost.payload);
+                foreach (var commit in payload["commits"])
                 {
-                    string message = commit.message;
+                    string username;
+                    string service;
+                    string token;
+                    using (var db = new Models.AuthContext())
+                    {
+                        var count = commit["author"].Children().Count();
+                        if (commit["author"].Children().Count() == 0)
+                        {
+                            service = "bitbucket";
+                            username = (string)commit["author"];
+                            try
+                            {
+                                token = db.Auths.First(c => c.BitbucketUser == username).Token;
+                            }
+                            catch
+                            {
+                                username = (string)payload["repository"]["owner"];
+                                token = db.Auths.First(c => c.BitbucketUser == username).Token;
+                            }
+                        }
+                        else
+                        {
+                            service = "github";
+                            username = (string)commit["author"]["username"];
+                            try
+                            {
+                                token = db.Auths.First(c => c.GithubUser == username).Token;
+                            }
+                            catch
+                            {
+                                username = (string)payload["repository"]["owner"]["name"];
+                                token = db.Auths.First(c => c.GithubUser == username).Token;
+                            }
+                        }
+                    }
+                    string message = (string)commit["message"];
                     string pattern = @"(?<=#)\d{1,}";
                     foreach (Match match in Regex.Matches(message, pattern, RegexOptions.IgnoreCase))
                     {
-                        var trello = new Trello("c6163a4015c586e703e8ea98f94a89fa");
-                        trello.Authorize("8c9152a54ff0b43f28d97966621ccb88242b703bfb4de005e3d2ab319da3ad54");
-                        var boardId = new BoardId(id);
-                        var card = trello.Cards.WithShortId(int.Parse(match.Value), boardId);
-                        var cardId = new CardId(card.Id);
-                        trello.Cards.AddComment(cardId, "Commit added: " + message);
+                        addComment(id, int.Parse(match.Value), message, token);
                         response = Request.CreateResponse(HttpStatusCode.Created);
                     }
                 }
@@ -41,5 +73,26 @@ namespace GiRello.Controllers
             return response;
         }
 
+
+
+        private bool addComment(string boardId, int cardNumber, string comment, string userToken)
+        {
+            trello.Authorize(userToken);
+            var bId = new BoardId(boardId);
+            var card = trello.Cards.WithShortId(cardNumber, bId);
+            var cardId = new CardId(card.Id);
+            trello.Cards.AddComment(cardId, "Commit added: " + comment);
+            return true;
+        }
+
+        private Trello _trello = null;
+        private Trello trello
+        {
+            get
+            {
+                if (_trello == null) _trello = new Trello("cba437c57ff37b1d42536e654657490d");
+                return _trello;
+            }
+        }
     }
 }

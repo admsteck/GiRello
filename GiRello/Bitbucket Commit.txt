@@ -10,7 +10,7 @@
                "type":"modified"
             }
          ],
-         "message":"changed readme\n",
+         "message":"#13 bitbucket unknown user",
          "node":"3d43f7560fd6",
          "parents":[
             "f931b6e8ab48"
