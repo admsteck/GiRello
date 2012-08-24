@@ -44,10 +44,14 @@
             <li class="four" data-bind="myFader: exists">
                 <h5>Hook up Git</h5>
                 If you do not have admin rights on the git repository, please get with the project admin to hook up git.  If you are a project admin,
-                select one of your trello boards from the list below to get the Post url to use with Git.<br /><br />
+                select one of your trello boards from the list below to get the Post url to use with Git.<br />
+                <br />
                 <select data-bind="options: boards, optionsCaption: 'Select a board...', optionsText: 'name', value: chosenBoard"></select>
                 <!-- ko with: chosenBoard -->@Request.Url.AbsoluteUri.TrimEnd('/')@Url.HttpRouteUrl("DefaultApi", new { controller = "Comments" })/<span data-bind="text: id"></span><!-- /ko -->
-                <br /><br />Todo: provide instructions on what to do with it.
+                <ul>
+                    <li>For Github, go to the repository admin and under "Service Hooks", select the "WebHook URLs", past the url above into the box and click "Update Settings"</li>
+                    <li>For Bitbucket, go to the repository admin and under "Services", add a "POST" service, past the url in the box and click "Save settings"</li>
+                </ul>
             </li>
             <li class="five" data-bind="myFader: exists">
                 <h5>Make commits!</h5>
