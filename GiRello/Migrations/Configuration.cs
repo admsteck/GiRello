@@ -9,7 +9,7 @@ namespace GiRello.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(GiRello.Models.AuthContext context)
