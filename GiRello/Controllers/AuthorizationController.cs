@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Management;
 
 namespace GiRello.Controllers
 {
@@ -23,6 +24,7 @@ namespace GiRello.Controllers
         // GET api/Authorization/5
         public Auth GetAuth(string id)
         {
+            new LogEvent(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString).Raise();
             Auth auth = db.Auths.Find(id);
             if (auth == null)
             {
@@ -101,6 +103,14 @@ namespace GiRello.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        private class LogEvent : WebRequestErrorEvent
+        {
+            public LogEvent(string message)
+                : base(null, null, 100001, new Exception(message))
+            { 
+            }
         }
     }
 }
