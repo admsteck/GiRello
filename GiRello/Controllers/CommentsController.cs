@@ -12,6 +12,9 @@ namespace GiRello.Controllers
 {
     public class CommentsController : ApiController
     {
+        private Models.AuthContext db = new Models.AuthContext();
+        private Trello trello = new Trello("cba437c57ff37b1d42536e654657490d");
+
         // POST api/comments
         public HttpResponseMessage Post([FromUri] string id, [FromBody] Models.GitPost gitPost)
         {
@@ -25,36 +28,33 @@ namespace GiRello.Controllers
                     string username;
                     string service;
                     string token;
-                    using (var db = new Models.AuthContext())
+                    var count = commit["author"].Children().Count();
+                    if (commit["author"].Children().Count() == 0)
                     {
-                        var count = commit["author"].Children().Count();
-                        if (commit["author"].Children().Count() == 0)
+                        service = "bitbucket";
+                        username = (string)commit["author"];
+                        try
                         {
-                            service = "bitbucket";
-                            username = (string)commit["author"];
-                            try
-                            {
-                                token = db.Auths.First(c => c.BitbucketUser == username).Token;
-                            }
-                            catch
-                            {
-                                username = (string)payload["repository"]["owner"];
-                                token = db.Auths.First(c => c.BitbucketUser == username).Token;
-                            }
+                            token = db.Auths.First(c => c.BitbucketUser == username).Token;
                         }
-                        else
+                        catch
                         {
-                            service = "github";
-                            username = (string)commit["author"]["username"];
-                            try
-                            {
-                                token = db.Auths.First(c => c.GithubUser == username).Token;
-                            }
-                            catch
-                            {
-                                username = (string)payload["repository"]["owner"]["name"];
-                                token = db.Auths.First(c => c.GithubUser == username).Token;
-                            }
+                            username = (string)payload["repository"]["owner"];
+                            token = db.Auths.First(c => c.BitbucketUser == username).Token;
+                        }
+                    }
+                    else
+                    {
+                        service = "github";
+                        username = (string)commit["author"]["username"];
+                        try
+                        {
+                            token = db.Auths.First(c => c.GithubUser == username).Token;
+                        }
+                        catch
+                        {
+                            username = (string)payload["repository"]["owner"]["name"];
+                            token = db.Auths.First(c => c.GithubUser == username).Token;
                         }
                     }
                     string message = (string)commit["message"];
@@ -85,14 +85,5 @@ namespace GiRello.Controllers
             return true;
         }
 
-        private Trello _trello = null;
-        private Trello trello
-        {
-            get
-            {
-                if (_trello == null) _trello = new Trello("cba437c57ff37b1d42536e654657490d");
-                return _trello;
-            }
-        }
     }
 }
