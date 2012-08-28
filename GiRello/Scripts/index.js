@@ -71,15 +71,16 @@ function AuthViewModel() {
             self.boards(me.boards);
             self.trelloUserId(me.id);
             $.getJSON("api/authorization/" + self.trelloUserId()).done(function (data) {
-                console.log("Got " + data);
                 self.githubUser(data.GithubUser);
                 self.bitbucketUser(data.BitbucketUser);
                 self.exists(true);
             }).always(function () {
-                console.log("Loaded");
                 self.authed(true);
                 self.unblockUI();
             });
+        }, function () {
+            Trello.deauthorize();
+            self.unblockUI();
         });
 
     };
@@ -103,7 +104,7 @@ function AuthViewModel() {
         $.unblockUI();
     };
 
-    this.blockUI();
+    self.blockUI();
     Trello.authorize({
         interactive: false,
         success: this.onAuthorize,
