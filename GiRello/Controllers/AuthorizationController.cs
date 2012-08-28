@@ -13,7 +13,7 @@ namespace GiRello.Controllers
 {
     public class AuthorizationController : ApiController
     {
-        private AuthContext db = new AuthContext();
+        private GiRelloContext db = new GiRelloContext();
 
         // GET api/Authorization
         public IEnumerable<Auth> GetAuths()

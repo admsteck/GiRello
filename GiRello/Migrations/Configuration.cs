@@ -5,7 +5,7 @@ namespace GiRello.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<GiRello.Models.AuthContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<GiRello.Models.GiRelloContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace GiRello.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(GiRello.Models.AuthContext context)
+        protected override void Seed(GiRello.Models.GiRelloContext context)
         {
             //  This method will be called after migrating to the latest version.
 
