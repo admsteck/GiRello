@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace GiRello.Controllers
 {
-    public class CommentsController : ApiController
+    public class CommitController : ApiController
     {
         private Models.GiRelloContext db = new Models.GiRelloContext();
         private Trello trello = new Trello("cba437c57ff37b1d42536e654657490d");
