@@ -24,7 +24,6 @@ namespace GiRello.Controllers
         // GET api/Authorization/5
         public Auth GetAuth(string id)
         {
-            new LogEvent(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString).Raise();
             Auth auth = db.Auths.Find(id);
             if (auth == null)
             {
@@ -37,7 +36,7 @@ namespace GiRello.Controllers
         // PUT api/Authorization/5
         public HttpResponseMessage PutAuth(string id, Auth auth)
         {
-            if (ModelState.IsValid && id == auth.Token)
+            if (ModelState.IsValid && id == auth.TrelloUserId)
             {
                 db.Entry(auth).State = EntityState.Modified;
 
