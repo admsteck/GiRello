@@ -32,6 +32,7 @@ function AuthViewModel() {
     self.boards = ko.observableArray([]);
 
     self.saveAuth = function () {
+        self.blockUI();
         var method = "post";
         var u = "";
         if (self.exists()) {
@@ -48,10 +49,13 @@ function AuthViewModel() {
             self.exists(true);
         }).fail(function () {
             console.log("mope");
+        }).always(function () {
+            self.unblockUI();
         });
     };
 
     self.Authorize = function () {
+        self.blockUI();
         Trello.authorize({
             type: 'popup',
             success: self.onAuthorize,
@@ -74,14 +78,36 @@ function AuthViewModel() {
             }).always(function () {
                 console.log("Loaded");
                 self.authed(true);
+                self.unblockUI();
             });
         });
 
     };
 
+    self.blockUI = function () {
+        $.blockUI({
+            message: "<h1>Please wait...</h1>",
+            css: {
+                border: 'none',
+                padding: '15px',
+                backgroundColor: '#000',
+                '-webkit-border-radius': '10px',
+                '-moz-border-radius': '10px',
+                opacity: .5,
+                color: '#ffffff'
+            }
+        });
+    };
+
+    self.unblockUI = function () {
+        $.unblockUI();
+    };
+
+    this.blockUI();
     Trello.authorize({
         interactive: false,
-        success: this.onAuthorize
+        success: this.onAuthorize,
+        error: this.unblockUI
     });
 }
 
