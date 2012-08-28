@@ -63,7 +63,7 @@ function AuthViewModel() {
 
     self.onAuthorize = function () {
         self.authToken(Trello.token());
-        Trello.get("members/me", function (me) {
+        Trello.get("members/me?fields=username&boards=open&board_fields=name", function (me) {
             self.boards(me.boards);
             self.trelloUserId(me.id);
             $.getJSON("api/authorization/" + self.trelloUserId()).done(function (data) {
