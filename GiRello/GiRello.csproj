@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Auth.cs" />
+    <Compile Include="Models\GiRelloContext.cs" />
     <Compile Include="Models\GitPost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
