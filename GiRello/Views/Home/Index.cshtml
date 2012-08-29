@@ -63,9 +63,8 @@
     </section>
 </div>
 @section scripts{
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/knockout", "~/bundles/jqueryui")
     <script src="https://api.trello.com/1/client.js?key=cba437c57ff37b1d42536e654657490d"></script>
-    @Scripts.Render("~/Scripts/jquery.blockUI.js", "~/Scripts/index.js")
+    @Scripts.Render("~/bundles/index")
 }
 

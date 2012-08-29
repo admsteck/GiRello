@@ -24,7 +24,10 @@ namespace GiRello
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                       "~/Scripts/knockout-{version}.js")); 
+                       "~/Scripts/knockout-{version}.js"));
+
+            bundles.Add(new Bundle("~/bundles/index", new JsMinify()).Include(
+                        "~/Scripts/jquery.blockUI.js", "~/Scripts/index.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 

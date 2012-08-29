@@ -10,6 +10,8 @@ namespace GiRello.Models
     {
         public DbSet<Auth> Auths { get; set; }
 
+        public GiRelloContext() : base("Name=GiRelloContext") { }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<GiRelloContext, GiRello.Migrations.Configuration>());
