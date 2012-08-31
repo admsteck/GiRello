@@ -47,7 +47,7 @@
                 select one of your trello boards from the list below to get the Post url to use with Git.<br />
                 <br />
                 <select data-bind="options: boards, optionsCaption: 'Select a board...', optionsText: 'name', value: chosenBoard"></select>
-                <!-- ko with: chosenBoard -->@Request.Url.AbsoluteUri.TrimEnd('/')@Url.HttpRouteUrl("DefaultApi", new { controller = "Comments" })/<span data-bind="text: id"></span><!-- /ko -->
+                <!-- ko with: chosenBoard -->@Request.Url.AbsoluteUri.TrimEnd('/')@Url.HttpRouteUrl("DefaultApi", new { controller = "Commit" })/<span data-bind="text: id"></span><!-- /ko -->
                 <ul>
                     <li>For Github, go to the repository admin and under "Service Hooks", select the "WebHook URLs", past the url above into the box and click "Update Settings"</li>
                     <li>For Bitbucket, go to the repository admin and under "Services", add a "POST" service, past the url in the box and click "Save settings"</li>
