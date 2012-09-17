@@ -74,6 +74,9 @@ function AuthViewModel() {
                 self.githubUser(data.GithubUser);
                 self.bitbucketUser(data.BitbucketUser);
                 self.exists(true);
+                if (self.authToken() != data.Token) {
+                    self.saveAuth();
+                }
             }).always(function () {
                 self.authed(true);
                 self.unblockUI();
